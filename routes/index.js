@@ -82,6 +82,7 @@ router.post('/deploy', function (req, res, next) {
     })
 });
 
+/*
 //deposit ether
 router.post('/deposit', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
@@ -98,7 +99,9 @@ router.post('/deposit', function (req, res, next) {
       res.send(error.toString());
     })
 });
+*/
 
+/*
 //withdraw ether
 router.post('/withdraw', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
@@ -114,7 +117,9 @@ router.post('/withdraw', function (req, res, next) {
       res.send(error.toString());
     })
 });
+*/
 
+/*
 //transfer ether
 router.post('/transfer', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
@@ -130,5 +135,6 @@ router.post('/transfer', function (req, res, next) {
       res.send(error.toString());
     })
 });
+*/
 
 module.exports = router;

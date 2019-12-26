@@ -15,15 +15,21 @@ let update = $('#update');
 
 let logger = $('#logger');
 
+/*
 let deposit = $('#deposit');
 let depositButton = $('#depositButton');
+*/
 
+/*
 let withdraw = $('#withdraw');
 let withdrawButton = $('#withdrawButton');
+*/
 
+/*
 let transferEtherTo = $('#transferEtherTo');
 let transferEtherValue = $('#transferEtherValue');
 let transferEtherButton = $('#transferEtherButton');
+*/
 
 let bankAddress = "";
 let nowAccount = "";
@@ -130,6 +136,7 @@ update.on('click', function () {
 	}
 })
 
+/*
 // 當按下存款按鍵時
 depositButton.on('click', async function () {
 
@@ -168,7 +175,9 @@ depositButton.on('click', async function () {
 	})
 
 })
+*/
 
+/*
 // 當按下提款按鍵時
 withdrawButton.on('click', async function () {
 
@@ -206,7 +215,9 @@ withdrawButton.on('click', async function () {
 		}
 	})
 })
+*/
 
+/*
 // 當按下轉帳按鍵時
 transferEtherButton.on('click', async function () {
 
@@ -245,6 +256,7 @@ transferEtherButton.on('click', async function () {
 		}
 	})
 })
+*/
 
 // 載入bank合約
 function loadBank(address) {
