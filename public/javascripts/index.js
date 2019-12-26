@@ -103,15 +103,18 @@ update.on('click', function () {
 			log({
 				address: nowAccount,
 				ethBalance: result.ethBalance,
-				bankBalance: result.bankBalance,
-				coinBalance: result.coinBalance
+				borrowEtherBalance: result.borrowEtherBalance,
+				tokenBalance: result.tokenBalance,
+				withdrawBalance: result.withdrawBalance,
+				lockBalance: result.lockBalance
 			})
 			log('更新帳戶資料')
 
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
-			$('#bankBalance').text('銀行ETH餘額 (ETH): ' + result.bankBalance)
-			// TODO: coinBalance
-			$('#coinBalance').text('COIN 餘額: ' + result.coinBalance)
+			$('#borrowEtherBalance').text('ETH借款額度 (ETH): ' + result.borrowEtherBalance)
+			$('#tokenBalance').text('Token 餘額: ' + result.tokenBalance)
+			$('#withdrawBalance').text('可提領Token 餘額: ' + result.tokenBalance)
+			$('#lockBalance').text('上鎖Token 餘額: ' + result.tokenBalance)
 		})
 	}
 	else {
@@ -119,9 +122,10 @@ update.on('click', function () {
 			account: nowAccount
 		}, function (result) {
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
-			$('#bankBalance').text('銀行ETH餘額 (ETH): ')
-			// TODO: coinBalance
-			$('#coinBalance').text('COIN 餘額: ')
+			$('#borrowEtherBalance').text('ETH借款額度 (ETH): ')
+			$('#tokenBalance').text('Token 餘額: ')
+			$('#withdrawBalance').text('可提領Token 餘額: ')
+			$('#lockBalance').text('上鎖Token 餘額: ')
 		})
 	}
 })

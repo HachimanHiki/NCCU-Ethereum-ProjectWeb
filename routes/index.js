@@ -31,12 +31,16 @@ router.get('/allBalance', async function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.query.address;
   let ethBalance = await web3.eth.getBalance(req.query.account)
-  let bankBalance = await bank.methods.getBankBalance().call({ from: req.query.account })
-  let coinBalance = await bank.methods.getCoinBalance().call({ from: req.query.account })
+  let borrowEtherBalance = await bank.methods.getBorrowEther().call({ from: req.query.account })
+  let tokenBalance = await bank.methods.getTokenBalance().call({ from: req.query.account })
+  let withdrawBalance = await bank.methods.getUnlockTokenBalance().call({ from: req.query.account })
+  let lockBalance = await bank.methods.getLockedTokenBalance().call({ from: req.query.account })
   res.send({
     ethBalance: web3.utils.fromWei(ethBalance, 'ether'),
-    bankBalance: web3.utils.fromWei(bankBalance, 'ether'),
-    coinBalance: web3.utils.fromWei(coinBalance, 'ether')
+    borrowEtherBalance: web3.utils.fromWei(borrowEtherBalance, 'ether'),
+    tokenBalance: web3.utils.fromWei(tokenBalance, 'ether'),
+    withdrawBalance: web3.utils.fromWei(withdrawBalance, 'ether'),
+    lockBalance: web3.utils.fromWei(lockBalance, 'ether')
   })
 });
 

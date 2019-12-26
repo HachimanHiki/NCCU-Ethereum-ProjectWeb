@@ -10,7 +10,7 @@ contract Defi is Lender, Borrower{
     // user withdraw
 
     function withdrawERC20(uint256 value) public{
-        require(getUnlockTokenBalance(msg.sender) >= value);
+        require(getUnlockTokenBalance() >= value);
         tokenBalance[msg.sender][erc20Token] = tokenBalance[msg.sender][erc20Token].sub(value);
         erc20Token.transfer(msg.sender, value);
     }

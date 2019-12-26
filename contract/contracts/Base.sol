@@ -28,28 +28,28 @@ contract Base is Claimable{
         erc20Token = ERC20(_erc20TokenAddress);
     }
 
-    function getBorrowEther(address _add) public view returns (uint256) {
-        return borrowEther[_add];
+    function getBorrowEther() public view returns (uint256) {
+        return borrowEther[msg.sender];
     }
 
-    function getInitBorrowTime(address _add) public view returns (uint256) {
-        return borrowInfo[_add].initBorrowTime;
+    function getInitBorrowTime() public view returns (uint256) {
+        return borrowInfo[msg.sender].initBorrowTime;
     }
 
-    function getInitBorrowRate(address _add) public view returns (uint256) {
-        return borrowInfo[_add].initBorrowRate;
+    function getInitBorrowRate() public view returns (uint256) {
+        return borrowInfo[msg.sender].initBorrowRate;
     }
 
-    function getLockedTokenBalance(address _add) public view returns (uint256) {
-        return lockedToken[_add];
+    function getLockedTokenBalance() public view returns (uint256) {
+        return lockedToken[msg.sender];
     }
 
-    function getUnlockTokenBalance(address _add) public view returns (uint256) {
-        return tokenBalance[_add][erc20Token].sub(lockedToken[_add]);
+    function getUnlockTokenBalance() public view returns (uint256) {
+        return tokenBalance[msg.sender][erc20Token].sub(lockedToken[msg.sender]);
     }
 
-    //function getTokenBalance(address _add, ERC20 _Token) public view returns (uint256) {
-    function getTokenBalance(address _add) public view returns (uint256) {
-        return tokenBalance[_add][erc20Token];
+    //function getTokenBalance(ERC20 _Token) public view returns (uint256) {
+    function getTokenBalance() public view returns (uint256) {
+        return tokenBalance[msg.sender][erc20Token];
     }
 }
