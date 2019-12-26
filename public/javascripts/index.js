@@ -1,12 +1,12 @@
 'use strict'
 
-/*let contractAddress = $('#contractAddress');
+let contractAddress = $('#contractAddress');
 let deployedContractAddressInput = $('#deployedContractAddressInput');
 let loadDeployedContractButton = $('#loadDeployedContractButton');
 let deployNewContractButton = $('#deployNewContractButton');
 
 let killContractButton = $('#killContractButton')
-*/
+
 let whoami = $('#whoami');
 let whoamiButton = $('#whoamiButton');
 let copyButton = $('#copyButton');
@@ -24,8 +24,6 @@ let withdrawButton = $('#withdrawButton');
 let transferEtherTo = $('#transferEtherTo');
 let transferEtherValue = $('#transferEtherValue');
 let transferEtherButton = $('#transferEtherButton');
-
-
 
 let bankAddress = "";
 let nowAccount = "";
@@ -50,7 +48,7 @@ $.get('/accounts', function (accounts) {
 
 	log(accounts, '以太帳戶')
 })
-/*
+
 // 當按下載入既有合約位址時
 loadDeployedContractButton.on('click', function () {
 	loadBank(deployedContractAddressInput.val())
@@ -93,7 +91,7 @@ copyButton.on('click', function () {
 	textarea.remove()
 	return false
 })
-*/
+
 // 當按下更新按鍵時
 // TODO: update coin balance
 update.on('click', function () {
@@ -113,7 +111,7 @@ update.on('click', function () {
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
 			$('#bankBalance').text('銀行ETH餘額 (ETH): ' + result.bankBalance)
 			// TODO: coinBalance
-			$('#coinBalance').text('Coin餘額 : ' + result.coinBalance)
+			$('#coinBalance').text('COIN 餘額: ' + result.coinBalance)
 		})
 	}
 	else {
@@ -123,12 +121,10 @@ update.on('click', function () {
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
 			$('#bankBalance').text('銀行ETH餘額 (ETH): ')
 			// TODO: coinBalance
-			$('#coinBalance').text('Coin餘額 : ' + result.coinBalance)
+			$('#coinBalance').text('COIN 餘額: ')
 		})
 	}
 })
-
-
 
 // 當按下存款按鍵時
 depositButton.on('click', async function () {
@@ -208,7 +204,7 @@ withdrawButton.on('click', async function () {
 })
 
 // 當按下轉帳按鍵時
-/*transferEtherButton.on('click', async function () {
+transferEtherButton.on('click', async function () {
 
 	if (bankAddress == "") {
 		return;
@@ -244,10 +240,10 @@ withdrawButton.on('click', async function () {
 			doneTransactionStatus()
 		}
 	})
-})*/
+})
 
 // 載入bank合約
-/*function loadBank(address) {
+function loadBank(address) {
 	if (!(address === undefined || address === null || address === '')) {
 		$.get('/contract', {
 			address: address
@@ -265,10 +261,10 @@ withdrawButton.on('click', async function () {
 			}
 		})
 	}
-}*/
+}
 
 // 新增bank合約
-/*async function newBank() {
+async function newBank() {
 
 	// 解鎖
 	let unlock = await unlockAccount();
@@ -296,7 +292,7 @@ withdrawButton.on('click', async function () {
 			doneTransactionStatus();
 		}
 	})
-}*/
+}
 
 function waitTransactionStatus() {
 	$('#accountStatus').html('帳戶狀態 <b style="color: blue">(等待交易驗證中...)</b>')
@@ -328,6 +324,3 @@ async function unlockAccount() {
 			})
 	}
 }
-
-
-

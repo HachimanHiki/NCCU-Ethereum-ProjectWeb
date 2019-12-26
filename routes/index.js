@@ -5,7 +5,7 @@ const Web3 = require('web3');
 
 const web3 = new Web3('http://localhost:8545');
 
-const contract = require('../contract/Bank.json');
+const contract = require('../contract/Defi.json');
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
@@ -126,11 +126,5 @@ router.post('/transfer', function (req, res, next) {
       res.send(error.toString());
     })
 });
-
-
-
-
-
-
 
 module.exports = router;
