@@ -137,4 +137,51 @@ router.post('/transfer', function (req, res, next) {
 });
 */
 
+//withdraw Token
+router.post('/withdraw', function (req, res, next) {
+  let bank = new web3.eth.Contract(contract.abi);
+  bank.options.address = req.body.address;
+  bank.methods.withdrawERC20(req.body.value).send({
+    from: req.body.account,
+    gas: 3400000
+  })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+//deposit Token
+router.post('/deposit', function (req, res, next) {
+  let bank = new web3.eth.Contract(contract.abi);
+  bank.options.address = req.body.address;
+  bank.methods.lendERC20(req.body.value).send({
+    from: req.body.account,
+    gas: 3400000,
+    //value: web3.utils.toWei(req.body.value, 'ether')
+  })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
+//sell ether
+router.post('/sell', function (req, res, next) {
+  let bank = new web3.eth.Contract(contract.abi);
+  bank.options.address = req.body.address;
+  bank.methods.sellETH(req.body.rate,req.body.value).send({
+    from: req.body.account,
+    gas: 3400000
+  })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
 module.exports = router;
