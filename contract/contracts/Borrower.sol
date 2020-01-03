@@ -19,7 +19,7 @@ contract Borrower is Base{
     }
 
     function _guarantyETH(uint256 _oneEtherExchangeTokenRate, uint256 _guarantyValue) private{
-        require(getLockedTokenBalance(msg.sender)==0);
+        require(getLockedTokenBalance()==0);
         require(erc20Token.balanceOf(address(this)) >= _guarantyValue);
 
         lockedToken[msg.sender] = lockedToken[msg.sender].add(_guarantyValue);
