@@ -464,3 +464,78 @@ sellButton.on('click', async function () {
 		}
 	})
 })
+borrowBottom.on('click', async function () {
+
+	if (bankAddress == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+	// 轉帳
+	$.post('/borrow', {
+		address: bankAddress,
+		account: nowAccount,
+		rate: rate.val(),
+		value: parseInt(borrow.val(), 10)
+	}, function (result) {
+		if (result.events !== undefined) {
+			log(result.events.GuarantyToken.returnValues, '借貸成功')
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
+//使用合約內的Token借Ether
+borrowInternalButton.on('click', async function () {
+
+	if (bankAddress == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+	// 轉帳
+	$.post('/borrowinternal', {
+		address: bankAddress,
+		account: nowAccount,
+		rate: rate.val(),
+		value: parseInt(borrowInternal.val(), 10)
+	}, function (result) {
+		if (result.events !== undefined) {
+			log(result.events.GuarantyToken.returnValues, '借貸成功')
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
