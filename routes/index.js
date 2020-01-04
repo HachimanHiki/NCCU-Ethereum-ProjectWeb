@@ -5,6 +5,7 @@ const Web3 = require('web3');
 const web3 = new Web3('http://localhost:8545');
 
 const contract = require('../contract/Defi.json');
+const tokenContract = require('../contract/ProjectToken.json');
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
@@ -28,14 +29,20 @@ router.get('/balance', async function (req, res, next) {
 //balance
 router.get('/allBalance', async function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
+  let erc20 = new web3.eth.Contract(tokenContract.abi);
   bank.options.address = req.query.address;
+  erc20.options.address = req.query.erc20Address;
+
   let ethBalance = await web3.eth.getBalance(req.query.account)
+  let accountTokenBalance = await erc20.methods.balanceOf(req.query.account).call()
   let borrowEtherBalance = await bank.methods.getBorrowEther().call({ from: req.query.account })
   let tokenBalance = await bank.methods.getTokenBalance().call({ from: req.query.account })
   let withdrawBalance = await bank.methods.getUnlockTokenBalance().call({ from: req.query.account })
   let lockBalance = await bank.methods.getLockedTokenBalance().call({ from: req.query.account })
+
   res.send({
     ethBalance: web3.utils.fromWei(ethBalance, 'ether'),
+    accountTokenBalance: web3.utils.fromWei(accountTokenBalance, 'ether'),
     borrowEtherBalance: web3.utils.fromWei(borrowEtherBalance, 'ether'),
     tokenBalance: web3.utils.fromWei(tokenBalance, 'ether'),
     withdrawBalance: web3.utils.fromWei(withdrawBalance, 'ether'),
@@ -63,11 +70,30 @@ router.post('/unlock', function (req, res, next) {
     })
 });
 
-//deploy bank contract
+//deploy defi contract
 router.post('/deploy', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.deploy({
-    data: contract.bytecode
+    data: contract.bytecode,
+    arguments: [req.body.erc20Address]
+  })
+    .send({
+      from: req.body.account,
+      gas: 3400000
+    })
+    .on('receipt', function (receipt) {
+      res.send(receipt);
+    })
+    .on('error', function (error) {
+      res.send(error.toString());
+    })
+});
+
+//deploy erc20 contract
+router.post('/deployERC20', function (req, res, next) {
+  let erc20 = new web3.eth.Contract(tokenContract.abi);
+  erc20.deploy({
+    data: tokenContract.bytecode
   })
     .send({
       from: req.body.account,
@@ -140,7 +166,7 @@ router.post('/transfer', function (req, res, next) {
 router.post('/withdraw', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.withdrawERC20(req.body.value).send({
+  bank.methods.withdrawERC20(web3.utils.toWei(req.body.value, 'ether')).send({
     from: req.body.account,
     gas: 3400000
   })
@@ -155,10 +181,9 @@ router.post('/withdraw', function (req, res, next) {
 router.post('/deposit', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.lendERC20(req.body.value).send({
+  bank.methods.lendERC20(web3.utils.toWei(req.body.value, 'ether')).send({
     from: req.body.account,
     gas: 3400000,
-    //value: web3.utils.toWei(req.body.value, 'ether')
   })
     .on('receipt', function (receipt) {
       res.send(receipt);
@@ -172,7 +197,7 @@ router.post('/deposit', function (req, res, next) {
 router.post('/sell', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.sellETH(req.body.rate,req.body.value).send({
+  bank.methods.sellETH(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
     from: req.body.account,
     gas: 3400000
   })
@@ -188,7 +213,7 @@ router.post('/sell', function (req, res, next) {
 router.post('/borrow', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.depositETHAndGuaranty(req.body.rate, req.body.value).send({
+  bank.methods.depositETHAndGuaranty(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
     from: req.body.account,
     gas: 3400000
   })
@@ -203,7 +228,7 @@ router.post('/borrow', function (req, res, next) {
 router.post('/borrowinternal', function (req, res, next) {
   let bank = new web3.eth.Contract(contract.abi);
   bank.options.address = req.body.address;
-  bank.methods.guarantyETH(req.body.rate, req.body.value).send({
+  bank.methods.guarantyETH(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
     from: req.body.account,
     gas: 3400000
   })

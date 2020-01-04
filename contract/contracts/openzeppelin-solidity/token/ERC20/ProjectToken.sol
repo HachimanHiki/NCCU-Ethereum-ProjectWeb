@@ -132,7 +132,7 @@ contract ProjectToken is StandardToken {
     string public constant symbol = "PJ";
     uint8 public constant decimals = 18; // only two deciminals, token cannot be divided past 1/100th
 
-    uint256 public constant INITIAL_SUPPLY =  100 ether; // 100 * 18 decimals
+    uint256 public constant INITIAL_SUPPLY =  10000 ether; // 100 * 18 decimals
 
     /**
     * @dev Contructor that gives msg.sender all of existing tokens.

@@ -43,6 +43,7 @@ let transferEtherValue = $('#transferEtherValue');
 let transferEtherButton = $('#transferEtherButton');
 */
 
+let erc20Address = "";
 let bankAddress = "";
 let nowAccount = "";
 let rate = "";
@@ -117,11 +118,13 @@ update.on('click', function () {
 	if (bankAddress != "") {
 		$.get('/allBalance', {
 			address: bankAddress,
+			erc20Address: erc20Address,
 			account: nowAccount
 		}, function (result) {
 			log({
 				address: nowAccount,
 				ethBalance: result.ethBalance,
+				accountTokenBalance: result.accountTokenBalance,
 				borrowEtherBalance: result.borrowEtherBalance,
 				tokenBalance: result.tokenBalance,
 				withdrawBalance: result.withdrawBalance,
@@ -130,8 +133,9 @@ update.on('click', function () {
 			log('更新帳戶資料')
 
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
+			$('#accountTokenBalance').text('Token帳戶餘額： ' + result.accountTokenBalance)
 			$('#borrowEtherBalance').text('ETH借款額度 (ETH): ' + result.borrowEtherBalance)
-			$('#tokenBalance').text('Token 餘額: ' + result.tokenBalance)
+			$('#tokenBalance').text('合約Token 餘額: ' + result.tokenBalance)
 			$('#withdrawBalance').text('可提領Token 餘額: ' + result.tokenBalance)
 			$('#lockBalance').text('上鎖Token 餘額: ' + result.tokenBalance)
 		})
@@ -141,8 +145,9 @@ update.on('click', function () {
 			account: nowAccount
 		}, function (result) {
 			$('#ethBalance').text('以太帳戶餘額 (ETH): ' + result.ethBalance)
+			$('#accountTokenBalance').text('Token帳戶餘額： ')
 			$('#borrowEtherBalance').text('ETH借款額度 (ETH): ')
-			$('#tokenBalance').text('Token 餘額: ')
+			$('#tokenBalance').text('合約Token 餘額: ')
 			$('#withdrawBalance').text('可提領Token 餘額: ')
 			$('#lockBalance').text('上鎖Token 餘額: ')
 		})
@@ -304,8 +309,19 @@ async function newBank() {
 	// 更新介面
 	waitTransactionStatus()
 
-	$.post('/deploy', {
+	await $.post('/deployERC20', {
 		account: nowAccount
+	}, function (result) {
+		if (result.contractAddress) {
+			log(result, '部署合約')
+
+			erc20Address = result.contractAddress
+		}
+	})
+
+	$.post('/deploy', {
+		account: nowAccount,
+		erc20Address: erc20Address
 	}, function (result) {
 		if (result.contractAddress) {
 			log(result, '部署合約')
