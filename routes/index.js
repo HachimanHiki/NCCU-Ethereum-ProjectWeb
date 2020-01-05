@@ -119,14 +119,9 @@ router.post('/distributeERC20', async function (req, res, next) {
 	accounts.forEach(function(x){
 		erc20.methods.transfer(x, totalSupply).send({
 			from: accounts[0]
-		})
-		.on('receipt', function (receipt) {
-			res.send(receipt);
-		})
-		.on('error', function (error) {
-			res.send(error.toString());
-		})
+		});
 	})
+	res.send()
 });
 
 /*
