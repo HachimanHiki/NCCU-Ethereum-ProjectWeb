@@ -107,6 +107,28 @@ router.post('/deployERC20', function (req, res, next) {
 		})
 });
 
+router.post('/distributeERC20', async function (req, res, next) {
+	let erc20 = new web3.eth.Contract(tokenContract.abi);
+	erc20.options.address = req.body.erc20Address;
+	let accounts = await web3.eth.getAccounts();
+	let totalSupply = await erc20.methods.balanceOf(accounts[0]).call();
+	totalSupply = web3.utils.fromWei(totalSupply, 'ether');
+	totalSupply = (totalSupply / 10).toString();
+	totalSupply = web3.utils.toWei(totalSupply, 'ether');
+
+	accounts.forEach(function(x){
+		erc20.methods.transfer(x, totalSupply).send({
+			from: accounts[0]
+		})
+		.on('receipt', function (receipt) {
+			res.send(receipt);
+		})
+		.on('error', function (error) {
+			res.send(error.toString());
+		})
+	})
+});
+
 /*
 //deposit ether
 router.post('/deposit', function (req, res, next) {

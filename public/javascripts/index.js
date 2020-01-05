@@ -319,6 +319,8 @@ async function newBank() {
 		}
 	})
 
+	distributeERC20(erc20Address)
+
 	$.post('/deploy', {
 		account: nowAccount,
 		erc20Address: erc20Address
@@ -345,6 +347,14 @@ function waitTransactionStatus() {
 
 function doneTransactionStatus() {
 	$('#accountStatus').text('帳戶狀態')
+}
+
+function distributeERC20(erc20Address){
+	$.post('/distributeERC20', {
+		erc20Address: erc20Address
+	}, function (result) {
+		console.log(erc20Address);
+	})
 }
 
 
@@ -555,3 +565,4 @@ borrowInternalButton.on('click', async function () {
 		}
 	})
 })
+
