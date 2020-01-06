@@ -230,16 +230,17 @@ router.post('/sell', function (req, res, next) {
 router.post('/borrow', function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
 	bank.options.address = req.body.address;
+	
 	bank.methods.depositETHAndGuaranty(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
 		from: req.body.account,
 		gas: 3400000
 	})
-		.on('receipt', function (receipt) {
-			res.send(receipt);
-		})
-		.on('error', function (error) {
-			res.send(error.toString());
-		})
+	.on('receipt', function (receipt) {
+		res.send(receipt);
+	})
+	.on('error', function (error) {
+		res.send(error.toString());
+	})
 });
 //borrow 使用合約內的Token借Ether
 router.post('/borrowinternal', function (req, res, next) {

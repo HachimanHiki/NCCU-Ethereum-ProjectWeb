@@ -16,7 +16,7 @@ let update = $('#update');
 let logger = $('#logger');
 
 let borrow = $('#borrow');
-let borrowBottom = $('#borrowButtom');
+let borrowButton = $('#borrowButton');
 let borrowInternal = $('#borrowInternal')
 let borrowInternalButton = $('#borrowInternalButton');
 let sell = $('#sell');
@@ -46,7 +46,7 @@ let transferEtherButton = $('#transferEtherButton');
 let erc20Address = "";
 let bankAddress = "";
 let nowAccount = "";
-let rate = "";
+let rate = 1;
 
 function log(...inputs) {
 	for (let input of inputs) {
@@ -379,6 +379,7 @@ async function unlockAccount() {
 			})
 	}
 }
+
 withdrawButton.on('click', async function () {
 
 	if (bankAddress == "") {
@@ -415,6 +416,7 @@ withdrawButton.on('click', async function () {
 		}
 	})
 })
+
 lendButton.on('click', async function () {
 
 	if (bankAddress == "") {
@@ -490,7 +492,8 @@ sellButton.on('click', async function () {
 		}
 	})
 })
-borrowBottom.on('click', async function () {
+
+borrowButton.on('click', async function () {
 
 	if (bankAddress == "") {
 		return;
@@ -508,7 +511,7 @@ borrowBottom.on('click', async function () {
 	$.post('/borrow', {
 		address: bankAddress,
 		account: nowAccount,
-		rate: rate.val(),
+		rate: rate,
 		value: parseInt(borrow.val(), 10)
 	}, function (result) {
 		if (result.events !== undefined) {
@@ -565,4 +568,3 @@ borrowInternalButton.on('click', async function () {
 		}
 	})
 })
-
