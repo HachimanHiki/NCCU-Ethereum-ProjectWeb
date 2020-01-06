@@ -9,8 +9,8 @@ contract Base is Claimable{
 
     ERC20 erc20Token;
     // 10% / 365 ~= 2.734*1e4 ~= 2734*1e7
-    uint256 interestRatePerDay = 2734;
-    uint256 interestRatePerDayDecimals = 1e7;
+    uint256 public interestRatePerDay = 2734;
+    uint256 public interestRatePerDayDecimals = 1e7;
     //uint256 USDTDecimals = 1e6;
 
     struct borrowInfomation{
@@ -18,14 +18,22 @@ contract Base is Claimable{
         uint256 initBorrowRate;
     }
 
-    mapping(address => uint256) public borrowEther;
-    mapping(address => uint256) public lockedToken;
-    mapping(address => borrowInfomation) public borrowInfo;
-    mapping(address => mapping(address => uint256)) public tokenBalance;
+    mapping(address => uint256) borrowEther;
+    mapping(address => uint256) lockedToken;
+    mapping(address => borrowInfomation) borrowInfo;
+    mapping(address => mapping(address => uint256)) tokenBalance;
 
     // now only support one ERC20 token
     constructor(address _erc20TokenAddress) public{
         erc20Token = ERC20(_erc20TokenAddress);
+    }
+
+    function setInterestRatePerDay(uint256 _newValue) public onlyOwner{
+        interestRatePerDay = _newValue;
+    }
+
+    function setInterestRatePerDayDecimals(uint256 _newValue) public onlyOwner{
+        interestRatePerDayDecimals = _newValue;
     }
 
     function getBorrowEther() public view returns (uint256) {
