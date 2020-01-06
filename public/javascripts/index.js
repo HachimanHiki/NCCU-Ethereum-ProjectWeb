@@ -380,119 +380,6 @@ async function unlockAccount() {
 	}
 }
 
-withdrawButton.on('click', async function () {
-
-	if (bankAddress == "") {
-		return;
-	}
-
-	// 解鎖
-	let unlock = await unlockAccount();
-	if (!unlock) {
-		return;
-	}
-
-	// 更新介面
-	waitTransactionStatus()
-	// 提款
-	$.post('/withdraw', {
-		address: bankAddress,
-		account: nowAccount,
-		value: parseInt(withdraw.val(), 10)
-	}, function (result) {
-		if (result.events !== undefined) {
-			log(result.events.WithdrawERC20.returnValues, '提款成功')
-
-			// 觸發更新帳戶資料
-			update.trigger('click')
-
-			// 更新介面 
-			doneTransactionStatus()
-		}
-		else {
-			log(result)
-			// 更新介面 
-			doneTransactionStatus()
-		}
-	})
-})
-
-lendButton.on('click', async function () {
-
-	if (bankAddress == "") {
-		return;
-	}
-
-	// 解鎖
-	let unlock = await unlockAccount();
-	if (!unlock) {
-		return;
-	}
-
-	// 更新介面 
-	waitTransactionStatus();
-	// 存款
-	$.post('/deposit', {
-		address: bankAddress,
-		account: nowAccount,
-		//value: deposit.val()
-	}, function (result) {
-		if (result.events !== undefined) {
-			log(result.events.LendERC20.returnValues, '存款成功')
-
-			// 觸發更新帳戶資料
-			update.trigger('click')
-
-			// 更新介面 
-			doneTransactionStatus()
-		}
-		else {
-			log(result)
-			// 更新介面 
-			doneTransactionStatus()
-		}
-	})
-
-})
-// 當按下轉帳按鍵時
-sellButton.on('click', async function () {
-
-	if (bankAddress == "") {
-		return;
-	}
-
-	// 解鎖
-	let unlock = await unlockAccount();
-	if (!unlock) {
-		return;
-	}
-
-	// 更新介面
-	waitTransactionStatus()
-	// 轉帳
-	$.post('/sell', {
-		address: bankAddress,
-		account: nowAccount,
-		rate: rate.val(),
-		value: parseInt(sell.val(), 10)
-	}, function (result) {
-		if (result.events !== undefined) {
-			log(result.events.SellETH.returnValues, '轉帳成功')
-
-			// 觸發更新帳戶資料
-			update.trigger('click')
-
-			// 更新介面 
-			doneTransactionStatus()
-		}
-		else {
-			log(result)
-			// 更新介面 
-			doneTransactionStatus()
-		}
-	})
-})
-
 borrowButton.on('click', async function () {
 
 	if (bankAddress == "") {
@@ -554,6 +441,119 @@ borrowInternalButton.on('click', async function () {
 	}, function (result) {
 		if (result.events !== undefined) {
 			log(result.events.GuarantyToken.returnValues, '借貸成功')
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
+// 當按下賣Ether按鍵時
+sellButton.on('click', async function () {
+
+	if (bankAddress == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+	// 轉帳
+	$.post('/sell', {
+		address: bankAddress,
+		account: nowAccount,
+		rate: rate.val(),
+		value: parseInt(sell.val(), 10)
+	}, function (result) {
+		if (result.events !== undefined) {
+			log(result.events.SellETH.returnValues, '轉帳成功')
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+})
+
+lendButton.on('click', async function () {
+
+	if (bankAddress == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面 
+	waitTransactionStatus();
+	// 存款
+	$.post('/deposit', {
+		address: bankAddress,
+		account: nowAccount,
+		//value: deposit.val()
+	}, function (result) {
+		if (result.events !== undefined) {
+			log(result.events.LendERC20.returnValues, '存款成功')
+
+			// 觸發更新帳戶資料
+			update.trigger('click')
+
+			// 更新介面 
+			doneTransactionStatus()
+		}
+		else {
+			log(result)
+			// 更新介面 
+			doneTransactionStatus()
+		}
+	})
+
+})
+
+withdrawButton.on('click', async function () {
+
+	if (bankAddress == "") {
+		return;
+	}
+
+	// 解鎖
+	let unlock = await unlockAccount();
+	if (!unlock) {
+		return;
+	}
+
+	// 更新介面
+	waitTransactionStatus()
+	// 提款
+	$.post('/withdraw', {
+		address: bankAddress,
+		account: nowAccount,
+		value: parseInt(withdraw.val(), 10)
+	}, function (result) {
+		if (result.events !== undefined) {
+			log(result.events.WithdrawERC20.returnValues, '提款成功')
 
 			// 觸發更新帳戶資料
 			update.trigger('click')
