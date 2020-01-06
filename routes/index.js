@@ -182,7 +182,15 @@ router.post('/transfer', function (req, res, next) {
 //borrow ether(存Token至合約借Ether)
 router.post('/borrow', function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
+	let erc20 = new web3.eth.Contract(tokenContract.abi);
 	bank.options.address = req.body.address;
+	erc20.options.address = req.body.erc20Address;
+
+	erc20.methods.approve(bank.options.address, web3.utils.toWei(req.body.value, 'ether')).send({
+		from: req.body.account,
+		gas: 3400000
+	})
+
 	bank.methods.depositETHAndGuaranty(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
 		from: req.body.account,
 		gas: 3400000

@@ -136,8 +136,8 @@ update.on('click', function () {
 			$('#accountTokenBalance').text('Token帳戶餘額： ' + result.accountTokenBalance)
 			$('#borrowEtherBalance').text('ETH借款額度 (ETH): ' + result.borrowEtherBalance)
 			$('#tokenBalance').text('合約Token 餘額: ' + result.tokenBalance)
-			$('#withdrawBalance').text('可提領Token 餘額: ' + result.tokenBalance)
-			$('#lockBalance').text('上鎖Token 餘額: ' + result.tokenBalance)
+			$('#withdrawBalance').text('可提領Token 餘額: ' + result.withdrawBalance)
+			$('#lockBalance').text('上鎖Token 餘額: ' + result.lockBalance)
 		})
 	}
 	else {
@@ -397,6 +397,7 @@ borrowButton.on('click', async function () {
 	// 轉帳
 	$.post('/borrow', {
 		address: bankAddress,
+		erc20Address: erc20Address,
 		account: nowAccount,
 		rate: rate,
 		value: parseInt(borrow.val(), 10)
