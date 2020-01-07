@@ -7,6 +7,11 @@ const web3 = new Web3('http://localhost:8545');
 const contract = require('../contract/Defi.json');
 const tokenContract = require('../contract/ProjectToken.json');
 
+const request = require('request')
+const cheerio = require('cheerio')
+const url = 'https://coinmarketcap.com/'
+const urlcondition = 'tr.cmc-table-row td.cmc-table__cell.cmc-table__cell--sortable.cmc-table__cell--right.cmc-table__cell--sort-by__price'
+
 /* GET home page. */
 router.get('/', async function (req, res, next) {
 	res.render('index')
@@ -281,4 +286,31 @@ router.post('/withdraw', function (req, res, next) {
 		})
 });
 
+// check ETH rate
+router.get('/checkETHrate', async function (req, _res, next) {
+	let ETHrate = 1.0;
+	request(url, async (err, res, body) => {
+		ETHrate = 6;
+		if (err) {
+			console.error(err);
+			_res.send()
+		}
+		else {
+			ETHrate = 7;
+			const $ = await cheerio.load(body);
+			console.log(ETHrate)
+			ETHrate = parseFloat(($($(urlcondition)[1]).text()).substr(1));
+			//await sleep(3000)
+			console.log(parseFloat(($($(urlcondition)[1]).text()).substr(1)))
+			//console.log(ETHrate)
+			_res.send({
+				rate: ETHrate
+			})
+		}
+	})
+});
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 module.exports = router;

@@ -26,6 +26,8 @@ let lendButton = $('#lendButton');
 let withdraw = $('#withdraw');
 let withdrawButton = $('#withdrawButton');
 
+let ethRate = $('#ethRate');
+let ethRateButton = $('#ethRateButton');
 
 /*
 let deposit = $('#deposit');
@@ -46,7 +48,7 @@ let transferEtherButton = $('#transferEtherButton');
 let erc20Address = "";
 let bankAddress = "";
 let nowAccount = "";
-let rate = 1;
+let rate = 1.0;
 
 function log(...inputs) {
 	for (let input of inputs) {
@@ -572,3 +574,26 @@ withdrawButton.on('click', async function () {
 		}
 	})
 })
+
+ethRateButton.on('click', function () {
+	waitCheckEthRate()
+
+	checkEthRate()
+
+	doneCheckEthRate()
+})
+function waitCheckEthRate(){
+	$('#ethRateTitle').text('ETH匯率 (USDT) <b style="color: blue">(等待中...)</b>')
+}
+function doneCheckEthRate(){
+	$('#ethRateTitle').text('ETH匯率 (USDT)')
+}
+function checkEthRate(){
+	$.get('/checkETHrate', {
+		// nothing
+	},function (result) {
+		rate = result.rate;
+		ethRate.text('當前匯率：' + result.rate);
+		log(result.rate, 'ETH 匯率');
+	})
+}
