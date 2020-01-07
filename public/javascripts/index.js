@@ -437,7 +437,7 @@ borrowInternalButton.on('click', async function () {
 	$.post('/borrowinternal', {
 		address: bankAddress,
 		account: nowAccount,
-		rate: rate.val(),
+		rate: rate,
 		value: parseInt(borrowInternal.val(), 10)
 	}, function (result) {
 		
