@@ -583,17 +583,17 @@ ethRateButton.on('click', function () {
 	doneCheckEthRate()
 })
 function waitCheckEthRate(){
-	$('#ethRateTitle').text('ETH匯率 (USDT) <b style="color: blue">(等待中...)</b>')
+	$('#ethRateTitle').html('ETH匯率 (USDT) <b style="color: blue">(等待中...)</b>');
 }
 function doneCheckEthRate(){
-	$('#ethRateTitle').text('ETH匯率 (USDT)')
+	$('#ethRateTitle').text('ETH匯率 (USDT)');
 }
 function checkEthRate(){
 	$.get('/checkETHrate', {
 		// nothing
 	},function (result) {
 		rate = result.rate;
-		ethRate.text('當前匯率：' + result.rate);
+		ethRate.html('當前匯率：<b style="color: blue"> ' + result.rate + ' </b>');
 		log(result.rate, 'ETH 匯率');
 	})
 }
