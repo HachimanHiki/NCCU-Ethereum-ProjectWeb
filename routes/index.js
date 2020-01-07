@@ -185,15 +185,18 @@ router.post('/transfer', function (req, res, next) {
 */
 
 //borrow ether(存Token至合約借Ether)
-router.post('/borrow', function (req, res, next) {
+router.post('/borrow', async function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
 	let erc20 = new web3.eth.Contract(tokenContract.abi);
 	bank.options.address = req.body.address;
 	erc20.options.address = req.body.erc20Address;
 
-	erc20.methods.approve(bank.options.address, web3.utils.toWei(req.body.value, 'ether')).send({
+	await erc20.methods.approve(bank.options.address, web3.utils.toWei(req.body.value, 'ether')).send({
 		from: req.body.account,
 		gas: 3400000
+	})
+	.on('error', function (error) {
+		res.send(error.toString());
 	})
 
 	bank.methods.depositETHAndGuaranty(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
@@ -212,7 +215,7 @@ router.post('/borrow', function (req, res, next) {
 router.post('/borrowinternal', function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
 	bank.options.address = req.body.address;
-	bank.methods.guarantyETH(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
+	bank.methods.guarantyETH(req.body.rate,req.body.value).send({
 		from: req.body.account,
 		gas: 3400000
 	})
@@ -228,7 +231,7 @@ router.post('/borrowinternal', function (req, res, next) {
 router.post('/sell', function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
 	bank.options.address = req.body.address;
-	bank.methods.sellETH(req.body.rate, web3.utils.toWei(req.body.value, 'ether')).send({
+	bank.methods.sellETH(req.body.rate,web3.utils.toWei(req.body.value, 'ether')).send({
 		from: req.body.account,
 		gas: 3400000
 	})
@@ -241,9 +244,20 @@ router.post('/sell', function (req, res, next) {
 });
 
 //deposit Token
-router.post('/deposit', function (req, res, next) {
+router.post('/lend', async function (req, res, next) {
 	let bank = new web3.eth.Contract(contract.abi);
+	let erc20 = new web3.eth.Contract(tokenContract.abi);
 	bank.options.address = req.body.address;
+	erc20.options.address = req.body.erc20Address;
+
+	await erc20.methods.approve(bank.options.address, web3.utils.toWei(req.body.value, 'ether')).send({
+		from: req.body.account,
+		gas: 3400000
+	})
+	.on('error', function (error) {
+		res.send(error.toString());
+	})
+
 	bank.methods.lendERC20(web3.utils.toWei(req.body.value, 'ether')).send({
 		from: req.body.account,
 		gas: 3400000

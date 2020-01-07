@@ -442,6 +442,7 @@ borrowInternalButton.on('click', async function () {
 		rate: rate.val(),
 		value: parseInt(borrowInternal.val(), 10)
 	}, function (result) {
+		
 		if (result.events !== undefined) {
 			log(result.events.GuarantyToken.returnValues, '借貸成功')
 
@@ -477,11 +478,12 @@ sellButton.on('click', async function () {
 	$.post('/sell', {
 		address: bankAddress,
 		account: nowAccount,
-		rate: rate.val(),
+		rate: rate,
 		value: parseInt(sell.val(), 10)
 	}, function (result) {
+		
 		if (result.events !== undefined) {
-			log(result.events.SellETH.returnValues, '轉帳成功')
+			log(result.events.SellETH.returnValues, '販賣成功')
 
 			// 觸發更新帳戶資料
 			update.trigger('click')
@@ -511,11 +513,12 @@ lendButton.on('click', async function () {
 
 	// 更新介面 
 	waitTransactionStatus();
-	// 存款
-	$.post('/deposit', {
+	// 存Token
+	$.post('/lend', {
 		address: bankAddress,
+		erc20Address: erc20Address,
 		account: nowAccount,
-		//value: deposit.val()
+		value: parseInt(lend.val(), 10)
 	}, function (result) {
 		if (result.events !== undefined) {
 			log(result.events.LendERC20.returnValues, '存款成功')
