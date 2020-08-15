@@ -401,7 +401,7 @@ borrowButton.on('click', async function () {
 		address: bankAddress,
 		erc20Address: erc20Address,
 		account: nowAccount,
-		rate: rate,
+		rate: parseInt(rate, 10),
 		value: parseInt(borrow.val(), 10)
 	}, function (result) {
 		if (result.events !== undefined) {
@@ -439,7 +439,7 @@ borrowInternalButton.on('click', async function () {
 	$.post('/borrowinternal', {
 		address: bankAddress,
 		account: nowAccount,
-		rate: rate,
+		rate: parseInt(rate, 10),
 		value: parseInt(borrowInternal.val(), 10)
 	}, function (result) {
 		
@@ -478,7 +478,7 @@ sellButton.on('click', async function () {
 	$.post('/sell', {
 		address: bankAddress,
 		account: nowAccount,
-		rate: rate,
+		rate: parseInt(rate, 10),
 		value: parseInt(sell.val(), 10)
 	}, function (result) {
 		
